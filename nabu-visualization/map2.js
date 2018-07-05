@@ -81,10 +81,17 @@ function ready (error, map, stats, eutotal, top, locale) {
     .on('mouseover', function (o, e) {
        // d3.select(this).style('opacity', 0.5)
       var topList = top[o.properties.postcode]
-      var tooltipContent = '<b>Postcode: ' + o.properties.postcode + '</b><br/><br/>'
+      var tooltipContent =  '<table class="receiver-table">' // '<b>Postcode: ' + o.properties.postcode + '</b><br/><br/>'
+
+      var total = 0
       for (var i = 0; i < topList.length; ++i) {
-        tooltipContent += `<b>${topList[i][0]}:</b> ${format(topList[i][1])}<br/>`
+        total += topList[i][1]
+        tooltipContent += `<tr class="receiver-line"><td class="receiver">${topList[i][0]}:</td><td class="spacer"></td> <td class="value">${format(topList[i][1])}</td></tr>`
       }
+      tooltipContent += '</table>'
+
+
+      tooltipContent = `<span class='total-postcode'>${format(total)}</span></br></br>` + tooltipContent
       div.html(tooltipContent)
       .style('left', d3.event.clientX + 'px')
       .style('top', d3.event.clientY + 'px')
