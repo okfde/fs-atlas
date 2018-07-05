@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+    <!-- <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.45.0/mapbox-gl.css' rel='stylesheet' /> -->
+    <style>
+      @font-face {
+        font-family: SourceSansPro-Regular;
+        src: url(/assets/fonts/SourceSansPro-Regular.otf);
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        background-color: #fff;
+        font-family: SourceSansPro-Regular;
+        font-size: 16px;
+        line-height: 26px;
+      }
+
+      #barChartLegend {
+        position: absolute;
+        left: 700px;
+        max-width: 150px;
+        display: none;
+      }
+
+      #map {
+        width: 100%;
+      }
+
+      .time-block {
+        display: flex;
+        margin-top: 10px;
+      }
+
+      .timeline {
+          background-color: #f6f6f6;
+          padding: 1px 10%;
+          padding-bottom: 67px;
+      }
+
+      .time-year {
+        width: 150px;
+        position: relative;
+        min-width: 150px;
+        float: left;
+        font-weight: bold;
+        border-right: 2px solid black;
+      }
+
+      .time-year img {
+        position: absolute;
+        left: 144px;
+        top: 0;
+      }
+
+      .time-text {
+        float: left;
+        width: 80%;
+        padding-left: 20px;
+        padding-bottom: 50px;
+
+      }
+
+      div.tooltip {
+          position: absolute;
+          text-align: center;
+          padding: 20px;
+          font: 12px sans-serif;
+          background: lightsteelblue;
+          border: 0px;
+          border-radius: 8px;
+          pointer-events: none;
+      }
+
+      path {
+        fill: #ccc;
+        stroke: #fff;
+        stroke-width: .5px;
+      }
+
+      path:hover {
+        fill: #f00;
+      }
+
+      #content {
+        margin: auto;
+        max-width: 966px;
+        padding: 20px;
+      }
+
+      p {
+        max-width: 567px;
+        margin: 66px auto;
+      }
+
+      h1 {
+        max-width: 567px;
+        margin: 66px auto;
+        font-family: SourceSansPro;
+        font-size: 19px;
+        font-weight: 600;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.53;
+        letter-spacing: normal;
+        color: #112233;
+      }
+
+      h2 {
+        max-width: 567px;
+        font-family: SourceSansPro;
+        font-size: 17px;
+        font-weight: 600;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.53;
+        letter-spacing: normal;
+        color: #112233;
+      }
+
+
+      .info {
+        max-width: 656px;
+        font-family: SourceSansPro;
+        font-size: 15px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.47;
+        letter-spacing: normal;
+        color: #112233;
+        padding: 43px 10%;
+        border-left: 5px solid black;
+        border-radius: 3px;
+        background-color: #ffffff;
+        box-shadow: 0 0 4px 0 rgba(151, 151, 151, 0.5);
+        margin: auto;
+      }
+
+      .info-list > li {
+        padding-left: 20px;
+      }
+
+      .staticplot {
+        text-align: center;
+      }
+
+    </style>
+ </head>
+  <body>
+    <div id="content">
+    <p>
+    Welche Leitlinien die EU für die Agrarpolitik beschließt, hat enorme
+    Auswirkungen auf den gesamten ländlichen Raum, auf Produkte im Handel und auf
+    die Natur. Derzeit verhandelt die EU wieder über die nächste Förderperiode für
+    die Jahre 2021 bis 2027. Der NABU sieht hierin die letzte Chance, noch einen
+    echten Kurswechsel herbeizuführen – und die Natur vor ihrem Kollaps im
+    ländlichen Raum zu bewahren.
+
+    <div class="info">
+      Das gesamte EU-Budget beträgt 150 Milliarden pro Jahr. Die meisten dieser
+      Gelder fließen über ein komplexes System von Subventionen wieder zurück in die
+      Mitgliedstaaten. Die Gemeinsame Agrarpolitik (GAP) der EU ist eine der am
+      längsten laufenden Subventionen in Europa. 
+    </div>
+
+    <p>
+    <div class="staticplot">
+    <img src="total-budget.png">
+    </div>
+    <p/>
+
+    <div class="info">
+      Die GAP macht unter allen Subventionen der Europäischen Union dabei
+      buchstäblich den Löwenanteil aus:  40 % des EU-Haushalts fließen in die
+      Agrarsubventionen, insgesamt 60 Milliarden jährlich. 
+    </div>
+
+    <p>
+    <div class="staticplot">
+    <img src="total-split-budget.png">
+    </div>
+    <p/>
+
+
+    <div class="info">
+      Die Mittel werden über drei Maßnahmen auf Landwirte in den Mitgliedstaaten aufgeteilt:
+
+      <ul class="info-list">
+        <li>Einkommensunterstützung</li>
+        <li>Maßnahmen zur Entwicklung des ländlichen Raums</li>
+        <li>Marktmaßnahmen</li>
+      </ul>
+
+    </div>
+
+    <p>
+    <div class="staticplot">
+    <img src="total-green.png">
+    </div>
+    <p/>
+
+    <h1>
+    Warum und wie subventioniert die Europäische Union die Landwirte und die Agrarindustrie mit über 60 Milliarden pro Jahr?
+    </h1>
+
+    <p>
+    Die Subventionierung der Landwirtschaft in dieser Größenordnung liegt in der
+    enormen Bedeutung der Landwirtschaft für Ernährung und Handel begründet.
+    Aufgrund der Volatilität des Marktes und der geringen Einnahmen können die
+    Landwirte jedoch nicht ohne direkte Einkommensbeihilfen auskommen. Deshalb
+    erhalten die Landwirte Direktzahlungen gebunden an ihre Betriebsgröße für eine
+    umweltschonende Landwirtschaft und die „Lieferung öffentlicher Güter“. 
+
+    </p>
+
+    <div class="timeline">
+      <h1>Die Gründe für die Subventionen sind vielfältig und änderten sich in den Jahzehnten </h1>
+
+      <p/>
+      <div class="time-block">
+        <div class="time-year">
+          1960
+          <img src="border.png">
+        </div>
+        <div class="time-text">
+          Die Subventionen wurden von der EU eingeführt, um zur Ernährungssicherheit
+          innerhalb der Europäischen Union beizutragen. Zudem sollten Anreize zur
+          Modernisierung und zur Entwicklung eines gemeinsamen Marktes geschaffen werden. 
+        </div>
+        <div style="clear: both">&nbsp;</div>
+      </div>
+
+      <div class="time-block">
+        <div class="time-year">
+          1980
+          <img src="border.png">
+        </div>
+        <div class="time-text">
+            Nach den “Butterbergen und Weinseen” der 80er Jahre wurden die Subventionen von
+            der Produktion entkoppelt. Stattdessen bemaßen sie sich an den individuelle
+            Produzenten und an der von ihm landwirtschaftlich bewirtschaftete Fläche. Sie
+            wurden zum großen Teil auch als Ausgleich für hohe europäische
+            Produktionskosten und als Einkommensbeihilfen gerechtfertigt. 
+        </div>
+        <div style="clear: both">&nbsp;</div>
+      </div>
+
+      <div class="time-block">
+        <div class="time-year">
+          2000
+          <img src="border.png">
+        </div>
+        <div class="time-text">
+          In den frühen 2000er Jahren wurden soziale und Umweltziele an die
+          Landwirtschaft gestellt, die in neuen Entwicklungsprogrammen umgesetzt werden
+          mussten.
+        </div>
+        <div style="clear: both">&nbsp;</div>
+      </div>
+
+
+      <div class="time-block">
+        <div class="time-year">
+          2005
+          <img src="border.png">
+        </div>
+        <div class="time-text">
+          Seit 2005 sind durch das System von Cross Compliance manche Gesetze, etwa die
+          Nitratrichtlinie, Gesetze zum Vogelschutz oder die FFH-Richtlinie, offiziell an
+          die Zahlungen von Subventionen gekoppelt.
+        </div>
+        <div style="clear: both">&nbsp;</div>
+      </div>
+
+      <div class="time-block">
+        <div class="time-year">
+          2013
+          <img src="border.png">
+        </div>
+        <div class="time-text">
+
+          Die jüngsten Neuerungen aus dem Jahr 2013 wurden ausdrücklich als
+          grüne Reform bezeichnet. Seitdem wird der Beitrag der Landwirte zum
+          Umweltschutz ganz deutlich als Rechtfertigung für
+          Subventionenangeführt.
+
+        </div>
+        <div style="clear: both">&nbsp;</div>
+      </div>
+
+      <div class="time-block">
+        <div class="time-year">
+          2018
+          <img src="border.png">
+        </div>
+        <div class="time-text">
+          Debatte zur Zukunft der Agragsubventionen
+        </div>
+        <div style="clear: both">&nbsp;</div>
+      </div>
+
+
+
+
+
+    </div>
+
+
+    <p>
+      Jeder Mitgliedstaat erhält einen Anteil, der er an die
+      anspruchsberechtigten Bauern weitergeleitet wird. Deutschland hat im Jahr
+      2016 insgesamt 6,3 Milliarden Euro und im Jahr 2017 einen entsprechenden
+      Betrag sowohl für Direktzahlungen an Landwirte als auch für Programme zur
+      Entwicklung des ländlichen Raums erhalten. In Deutschland wird es in die
+      Regionen weiterverteilt; in Niedersachsen sind sowohl in 2016 als in 2017
+      fast 1 Milliarden Euro ausgezahlt.
+    </p>
+
+    <h1>Verteilung der 60 Milliarden innerhalb der EU-Mitgliedsstaaten</h1>
+
+    <canvas id="total-eu" width="400" height="400"></canvas>
+    <p>
+
+    Die Agrarsubventionen bestehen aus ein Blumenstrauß an Maßnahmen,
+    Direktzahlungen und Marktmaßnahmen, verbunden an verschiedene Töpfe und
+    unterschiedliche Begründungen. Seit 2013 ist auch die Beiträge der Bauern
+    zu der Umwelt und das Klima teil der Begründungen für die CAP zum Beispeil:
+    Umweltmaßnahmen, “Greening” (das Ergrünen), und ökologische Landwirtschaft.
+    Aber wie ist der Verhältnis zwischen Umweltsbezogene Maßnahmen,
+    Einkommensstabiliserung, Ländliche Entwicklungsprogramme usw. 
+    </p>
+
+    <canvas id="total-de" width="400" height="400"></canvas>
+    <h1>In welchen Regionen wird besonders viel/wenig für die Umwelt getan?</h1>
+
+    <div id="map">
+      <div id="selected-postcode"></div>
+      <div id="total-button" style="opacity: 0">< Niedersachsen</div> 
+      <div id="barChartLegend">
+        <div id="leg-1">
+        Direktzahlungen zur Einkommenssicherung und Einkommensstabilisierung
+        </div>
+        <div id="leg-2">
+        “Greening”
+        </div>
+        <div id="leg-3">
+        Market measures: Marktmaßnahmen
+        </div>
+        <div id="leg-4">
+        Ökologischen Landbau
+        </div>
+        <div id="leg-5">
+        Agrarumweltmaßnahmen
+        </div>
+        <div id="leg-6">
+        Investitionen
+        </div>
+        <div id="leg-7">
+        Förderung der ländlichen Entwicklung
+        </div>
+      </div>
+      <svg width="960" height="600"/>
+    </div>
+    <div id="type-plot-container"/>
+    </div>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src="map.js"></script>
+  </body>
+ </html>
